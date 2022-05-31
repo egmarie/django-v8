@@ -27,12 +27,31 @@ const config = {
       {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
+        enforce: "pre",
+        use: [
+          {
+          loader: 'babel-loader', 
           options: {
             presets: [["@babel/preset-env", { "useBuiltIns": "usage", "corejs": 3, "targets": "defaults" }], "@babel/preset-react"]
           }
-        }
+          },
+          {
+            loader: 'source-map-loader', 
+            options: {
+              filterSourceMappingUrl: (url, resourcePath) => {
+                if (/broker-source-map-url\.js$/i.test(url)) {
+                  return false;
+                }
+
+                if (/keep-source-mapping-url\.js$/i.test(resourcePath)) {
+                  return "skip";
+                }
+
+                return true;
+              },
+            },
+          },
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,

@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+# todo model
 
 class Todo(models.Model):
     title = models.CharField(max_length=120)
@@ -9,3 +9,4 @@ class Todo(models.Model):
 
     def _str_(self):
         return self.title
+
