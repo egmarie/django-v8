@@ -8,7 +8,7 @@ const { WebpackManifestPlugin } = require("webpack-manifest-plugin")
 const config = {
    entry: './src/index.js',
    output: {
-       filename: 'bundle.[hash].js',
+       filename: 'bundle.[fullhash].js',
        path: path.join(__dirname, 'public'), 
    },
    plugins: [new HtmlWebpackPlugin({template: './src/index.html'})],
@@ -63,7 +63,7 @@ const config = {
 if (currentTask == "build") {
     config.mode = "production"
     config.module.rules[0].use[0] = _loader
-    config.plugins.push(new MiniCssExtractPlugin({ filename: "main.[hash].css" }), new CleanWebpackPlugin(), new WebpackManifestPlugin())
+    config.plugins.push(new MiniCssExtractPlugin({ filename: "main.[fullhash].css" }), new CleanWebpackPlugin(), new WebpackManifestPlugin())
   }
 
 module.exports = config

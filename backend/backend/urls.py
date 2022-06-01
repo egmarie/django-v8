@@ -15,18 +15,14 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include, re_path
-from django.conf.urls.static import serve
-from rest_framework import routers
-from todo  import views
+from django.urls import path, include
 
-router = routers.DefaultRouter()
-router.register(r'todos', views.TodoView, 'todo')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('csrf/', views.csrf),
-    path('ping/', views.ping),
+    path('api/', include('todo.urls')),
+    #path('csrf/', views.csrf),
+    #path('ping/', views.ping),
     
 ]

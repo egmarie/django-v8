@@ -5,7 +5,6 @@ import App from './App';
 
 import { Provider } from 'react-redux';
 import store from './redux/store';
-import './api/api_request'
 
 
 const rootElement = document.getElementById('app');

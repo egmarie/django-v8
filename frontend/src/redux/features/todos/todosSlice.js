@@ -1,3 +1,4 @@
+require('axios-debug-log');
 import {
   createSlice,
   createSelector,
@@ -5,7 +6,7 @@ import {
   createEntityAdapter,
 } from '@reduxjs/toolkit'
 const axios = require('axios');
-let _csrfToken = null;
+import { csrftoken } from '../csrf_token'
 
 async function getCsrfToken() {
   if (_csrfToken === null) {
@@ -25,23 +26,33 @@ async function getCsrfToken() {
 export const getTodos = createAsyncThunk('todos/getTodos', async () => {
   let dataUrl = `http://localhost:8000/api/todos/`
   let response = await axios.get(dataUrl);
-  let data = response.data
+  let data = response.data;
   return data
 });
 
 export const saveNewTodo = createAsyncThunk('todos/saveNewTodo',
   async (newTodo) => {
-    console.log(newTodo)
-    const initialTodo = newTodo 
-    let dataUrl = `http://localhost:8000/api/todos`
-    const response = await axios.post(dataUrl, initialTodo, {
+    const initialTodo = newTodo;
+    await axios({
+      method: 'post',
+      url: `https://127.0.0.1:8000/api/add-todo`, 
       headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-        'Access-Control-Allow-Origin': '*',
-        'X-CSRFToken': await getCsrfToken(),
+        'Content-Type': 'Application/x-www-form-urlencoded;charset=UTF-8',
+        'Accept': 'Application/json; application/x-www-form-urlencoded',
+        'Access-Control-Allow-Origin': 'http://localhost:8000/api/add-todo',
       },
-        })
-    return response.initialTodo
+      data: JSON.stringify(newTodo), 
+
+    }).then((response) => {
+
+        console.log(response.data);
+
+      }).catch((error) => {
+
+        console.log(error);
+        //console.log(axios.url);
+      });
+    return console.log(response.json())
   }
 )
 
